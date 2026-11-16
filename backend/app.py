@@ -4,10 +4,12 @@ from flask_cors import CORS
 from config import CORS_ORIGINS, FLASK_DEBUG, FLASK_PORT
 from database.connection import DatabaseConnectionError
 from routes.auth import auth_bp
+from routes.pdf import pdf_bp
 
 
 def register_blueprints(app):
     app.register_blueprint(auth_bp)
+    app.register_blueprint(pdf_bp)
 
 
 def create_app():
