@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="api-base" content="http://localhost:5000">
+  <title>Panel | EntreCOL+</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="barra-superior">
+      <div class="marca">
+        <button id="btn-menu" class="btn btn-icono btn-menu" type="button" aria-label="Abrir menú" aria-controls="menu-lateral" aria-expanded="false">&#9776;</button>
+        <div class="marca-logo" aria-hidden="true"><span>E+</span></div>
+        <div class="marca-texto">
+          <strong>EntreCOL+</strong>
+          <small>ColPlus-Solutions</small>
+        </div>
+      </div>
+      <div class="barra-usuario">
+        <span class="nombre" id="usuario-nombre"></span>
+        <span class="rol" id="usuario-rol"></span>
+        <button id="btn-salir" class="btn btn-secundario btn-chico" type="button">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <nav id="menu-lateral" class="menu-lateral" aria-label="Navegación principal">
+      <div class="menu-grupo">
+        <h4>Reportes</h4>
+        <button class="nav-item" type="button" data-ir="nomina"><span class="nav-punto"></span>Nómina</button>
+        <button class="nav-item" type="button" data-ir="personal"><span class="nav-punto"></span>Información personal</button>
+        <button class="nav-item" type="button" data-ir="salud"><span class="nav-punto"></span>Salud y Pensión</button>
+        <button class="nav-item" type="button" data-ir="novedades"><span class="nav-punto"></span>Novedades</button>
+        <button class="nav-item" type="button" data-ir="entretenimiento"><span class="nav-punto"></span>Base-Entretenimiento</button>
+      </div>
+      <div class="menu-grupo">
+        <h4>Gestión (CRUD)</h4>
+        <button class="nav-item" type="button" data-ir="empleados" data-plantilla="views/empleados.html"><span class="nav-punto"></span>Empleados</button>
+        <button class="nav-item" type="button" data-ir="novedades-crud" data-plantilla="views/novedades.html"><span class="nav-punto"></span>Novedades manuales</button>
+        <button class="nav-item" type="button" data-ir="peliculas" data-plantilla="views/peliculas.html"><span class="nav-punto"></span>Películas</button>
+        <button class="nav-item" type="button" data-ir="libros" data-plantilla="views/libros.html"><span class="nav-punto"></span>Libros</button>
+      </div>
+      <div class="menu-grupo">
+        <h4>Administración</h4>
+        <button class="nav-item" type="button" data-ir="carga" data-plantilla="views/carga.html"><span class="nav-punto"></span>Carga de archivos</button>
+        <button class="nav-item" type="button" data-ir="auditoria" data-plantilla="views/auditoria.html"><span class="nav-punto"></span>Auditoría y trazabilidad</button>
+      </div>
+    </nav>
+
+    <main id="contenido" class="contenido">
+      <section class="vista" data-vista="nomina" hidden>
+        <div class="vista-encabezado">
+          <div>
+            <h2>Reporte de Nómina</h2>
+            <p>Listado y conteo de empleados general, por dependencia y por cargo/dependencia.</p>
+          </div>
+          <button class="btn btn-acento" type="button" data-pdf="nomina">Vista Previa / Imprimir PDF</button>
+        </div>
+        <form id="filtros-nomina" class="tarjeta filtros">
+          <div class="campo">
+            <label for="nomina-modalidad">Agrupación</label>
+            <select id="nomina-modalidad" name="modalidad">
+              <option value="general">General</option>
+              <option value="por_dependencia">Por dependencia</option>
+              <option value="por_cargo_dependencia">Por cargo y dependencia</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="nomina-orden">Orden de nombres</label>
+            <select id="nomina-orden" name="orden">
+              <option value="ASC">Ascendente (A-Z)</option>
+              <option value="DESC">Descendente (Z-A)</option>
+            </select>
+          </div>
+          <div class="campo campo-ancho">
+            <label for="nomina-buscar">Buscar en la tabla</label>
+            <input id="nomina-buscar" type="search" placeholder="Código, nombre, cargo...">
+          </div>
+          <div class="acciones">
+            <button class="btn" type="submit">Consultar</button>
+          </div>
+        </form>
+        <div class="indicadores" id="indicadores-nomina"></div>
+        <div class="rejilla-2">
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Empleados por dependencia</h3><small>Gráfico de torta</small></div>
+            <div class="grafico"><canvas id="grafico-nomina-torta" aria-label="Empleados por dependencia" role="img"></canvas></div>
+          </div>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Empleados por dependencia y cargo</h3><small>Barras comparativas</small></div>
+            <div class="grafico"><canvas id="grafico-nomina-barras" aria-label="Empleados por dependencia y cargo" role="img"></canvas></div>
+          </div>
+        </div>
+        <div class="tarjeta" id="tarjeta-nomina-conteo" hidden>
+          <div class="tarjeta-titulo"><h3 id="titulo-nomina-conteo">Conteo</h3></div>
+          <div id="tabla-nomina-conteo"></div>
+        </div>
+        <div class="tarjeta">
+          <div class="tarjeta-titulo"><h3 id="titulo-nomina-listado">Listado de empleados</h3><small>Clic en un encabezado para ordenar ASC/DESC</small></div>
+          <div id="tabla-nomina"></div>
+        </div>
+      </section>
+
+      <section class="vista" data-vista="personal" hidden>
+        <div class="vista-encabezado">
+          <div>
+            <h2>Reporte de Información Personal</h2>
+            <p>Ficha laboral del empleado con discriminación de sus novedades.</p>
+          </div>
+          <button class="btn btn-acento" type="button" data-pdf="informacion_personal">Vista Previa / Imprimir PDF</button>
+        </div>
+        <form id="filtros-personal" class="tarjeta filtros">
+          <div class="campo campo-ancho">
+            <label for="personal-empleado">Empleado (código o nombre)</label>
+            <input id="personal-empleado" name="empleado" list="lista-empleados" required placeholder="Escriba para buscar..." autocomplete="off">
+            <datalist id="lista-empleados"></datalist>
+          </div>
+          <div class="acciones">
+            <button class="btn" type="submit">Consultar</button>
+          </div>
+        </form>
+        <div class="tarjeta" id="tarjeta-ficha">
+          <div class="tarjeta-titulo"><h3>Ficha del empleado</h3></div>
+          <div id="ficha-empleado" class="ficha"><p class="texto-suave">Seleccione un empleado para ver su información.</p></div>
+        </div>
+        <div class="tarjeta">
+          <div class="tarjeta-titulo"><h3>Discriminación de novedades</h3><small id="total-novedades-empleado"></small></div>
+          <div id="tabla-personal-novedades"></div>
+        </div>
+      </section>
+
+      <section class="vista" data-vista="salud" hidden>
+        <div class="vista-encabezado">
+          <div>
+            <h2>Reporte de Salud y Pensión</h2>
+            <p>Frecuencias de afiliación a EPS y fondos de pensión, generales y por dependencia.</p>
+          </div>
+          <button class="btn btn-acento" type="button" data-pdf="salud_pension">Vista Previa / Imprimir PDF</button>
+        </div>
+        <form id="filtros-salud" class="tarjeta filtros">
+          <div class="campo">
+            <label for="salud-orden">Orden de nombres</label>
+            <select id="salud-orden" name="orden">
+              <option value="ASC">Ascendente (A-Z)</option>
+              <option value="DESC">Descendente (Z-A)</option>
+            </select>
+          </div>
+          <div class="acciones">
+            <button class="btn" type="submit">Consultar</button>
+          </div>
+        </form>
+        <div class="rejilla-2">
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Frecuencia general por EPS</h3></div>
+            <div class="grafico"><canvas id="grafico-eps" role="img" aria-label="Frecuencia por EPS"></canvas></div>
+          </div>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Frecuencia general por Pensión</h3></div>
+            <div class="grafico"><canvas id="grafico-pension" role="img" aria-label="Frecuencia por fondo de pensión"></canvas></div>
+          </div>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>EPS por dependencia</h3><small>Barras comparativas</small></div>
+            <div class="grafico"><canvas id="grafico-eps-dependencia" role="img" aria-label="EPS por dependencia"></canvas></div>
+          </div>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Pensión por dependencia</h3><small>Barras comparativas</small></div>
+            <div class="grafico"><canvas id="grafico-pension-dependencia" role="img" aria-label="Pensión por dependencia"></canvas></div>
+          </div>
+        </div>
+        <div class="rejilla-2">
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Empleados por cargo y EPS</h3><small id="total-cargo-eps"></small></div>
+            <div id="tabla-cargo-eps"></div>
+          </div>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Empleados por cargo y Pensión</h3><small id="total-cargo-pension"></small></div>
+            <div id="tabla-cargo-pension"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="vista" data-vista="novedades" hidden>
+        <div class="vista-encabezado">
+          <div>
+            <h2>Reporte de Novedades</h2>
+            <p>Empleados con novedades entre F1 y F2 y su conteo por dependencia y cargo.</p>
+          </div>
+          <button class="btn btn-acento" type="button" data-pdf="novedades">Vista Previa / Imprimir PDF</button>
+        </div>
+        <form id="filtros-novedades" class="tarjeta filtros" novalidate>
+          <div class="campo">
+            <label for="novedades-f1">Fecha inicial F1</label>
+            <input id="novedades-f1" name="f1" type="text" inputmode="numeric" required pattern="(0[1-9]|1[0-2])/[0-9]{4}" placeholder="MM/AAAA" value="01/2022" maxlength="7">
+            <span class="campo-ayuda">Formato MM/AAAA</span>
+          </div>
+          <div class="campo">
+            <label for="novedades-f2">Fecha final F2</label>
+            <input id="novedades-f2" name="f2" type="text" inputmode="numeric" required pattern="(0[1-9]|1[0-2])/[0-9]{4}" placeholder="MM/AAAA" value="12/2022" maxlength="7">
+            <span class="campo-ayuda">Formato MM/AAAA</span>
+          </div>
+          <div class="campo">
+            <label for="novedades-orden">Orden de nombres</label>
+            <select id="novedades-orden" name="orden">
+              <option value="ASC">Ascendente (A-Z)</option>
+              <option value="DESC">Descendente (Z-A)</option>
+            </select>
+          </div>
+          <div class="acciones">
+            <button class="btn" type="submit">Consultar</button>
+          </div>
+        </form>
+        <div id="novedades-mensaje" class="mensaje" hidden></div>
+        <div class="indicadores" id="indicadores-novedades"></div>
+        <div class="rejilla-2">
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Novedades por dependencia y cargo</h3><small>Barras comparativas</small></div>
+            <div class="grafico"><canvas id="grafico-novedades" role="img" aria-label="Novedades por dependencia y cargo"></canvas></div>
+          </div>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Conteo por dependencia y cargo</h3></div>
+            <div id="tabla-novedades-conteo"></div>
+          </div>
+        </div>
+        <div class="tarjeta">
+          <div class="tarjeta-titulo"><h3>Empleados con novedades en el rango</h3></div>
+          <div id="tabla-novedades"></div>
+        </div>
+      </section>
+
+      <section class="vista" data-vista="entretenimiento" hidden>
+        <div class="vista-encabezado">
+          <div>
+            <h2>Reporte de Base-Entretenimiento</h2>
+            <p>Consultas dinámicas sobre el catálogo de películas y libros.</p>
+          </div>
+          <button class="btn btn-acento" type="button" data-pdf="entretenimiento">Vista Previa / Imprimir PDF</button>
+        </div>
+        <div class="pestanas" role="tablist" aria-label="Consultas de entretenimiento">
+          <button class="pestana activa" type="button" role="tab" aria-selected="true" data-panel="peliculas_genero_fechas">Películas por género (F1–F2)</button>
+          <button class="pestana" type="button" role="tab" aria-selected="false" data-panel="peliculas_n_generos">Películas con N géneros</button>
+          <button class="pestana" type="button" role="tab" aria-selected="false" data-panel="top_n_libros">Top N libros</button>
+          <button class="pestana" type="button" role="tab" aria-selected="false" data-panel="top_5_libros_anio">Top 5 por año y frecuencia</button>
+        </div>
+
+        <div class="vista" data-subpanel="peliculas_genero_fechas">
+          <form id="filtros-peliculas-genero" class="tarjeta filtros">
+            <div class="campo">
+              <label for="pg-f1">Fecha inicial F1</label>
+              <input id="pg-f1" name="f1" type="date" required value="1995-01-01">
+              <span class="campo-ayuda">Se envía en formato YYYY-MM-DD</span>
+            </div>
+            <div class="campo">
+              <label for="pg-f2">Fecha final F2</label>
+              <input id="pg-f2" name="f2" type="date" required value="2000-12-31">
+              <span class="campo-ayuda">Se envía en formato YYYY-MM-DD</span>
+            </div>
+            <div class="campo">
+              <label for="pg-genero">Género</label>
+              <select id="pg-genero" name="genero">
+                <option value="">Todos los géneros</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="pg-orden">Orden de títulos</label>
+              <select id="pg-orden" name="orden">
+                <option value="ASC">Ascendente (A-Z)</option>
+                <option value="DESC">Descendente (Z-A)</option>
+              </select>
+            </div>
+            <div class="acciones">
+              <button class="btn" type="submit">Consultar</button>
+            </div>
+          </form>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Frecuencia de películas por género</h3><small id="rango-peliculas-genero"></small></div>
+            <div class="grafico grafico-alto"><canvas id="grafico-peliculas-genero" role="img" aria-label="Frecuencia de películas por género"></canvas></div>
+          </div>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Películas por género</h3><small id="total-peliculas-genero"></small></div>
+            <div id="tabla-peliculas-genero"></div>
+          </div>
+        </div>
+
+        <div class="vista" data-subpanel="peliculas_n_generos" hidden>
+          <form id="filtros-n-generos" class="tarjeta filtros">
+            <div class="campo">
+              <label for="ng-n">Cantidad exacta de géneros (N)</label>
+              <input id="ng-n" name="n" type="number" min="1" max="20" step="1" required value="3">
+            </div>
+            <div class="campo">
+              <label for="ng-orden">Orden de títulos</label>
+              <select id="ng-orden" name="orden">
+                <option value="ASC">Ascendente (A-Z)</option>
+                <option value="DESC">Descendente (Z-A)</option>
+              </select>
+            </div>
+            <div class="acciones">
+              <button class="btn" type="submit">Consultar</button>
+            </div>
+          </form>
+          <div class="indicadores" id="indicadores-n-generos"></div>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3 id="titulo-n-generos">Películas con exactamente N géneros</h3></div>
+            <div id="tabla-n-generos"></div>
+          </div>
+        </div>
+
+        <div class="vista" data-subpanel="top_n_libros" hidden>
+          <form id="filtros-top-libros" class="tarjeta filtros">
+            <div class="campo">
+              <label for="tl-n">Cantidad de libros (N)</label>
+              <input id="tl-n" name="n" type="number" min="1" max="1000" step="1" required value="10">
+            </div>
+            <div class="campo">
+              <label for="tl-orden">Orden de títulos</label>
+              <select id="tl-orden" name="orden">
+                <option value="ASC">Ascendente (A-Z)</option>
+                <option value="DESC">Descendente (Z-A)</option>
+              </select>
+            </div>
+            <div class="acciones">
+              <button class="btn" type="submit">Consultar</button>
+            </div>
+          </form>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3 id="titulo-top-libros">Top N libros con mejor rating</h3></div>
+            <div class="grafico"><canvas id="grafico-top-libros" role="img" aria-label="Rating de los mejores libros"></canvas></div>
+          </div>
+          <div class="tarjeta">
+            <div id="tabla-top-libros"></div>
+          </div>
+        </div>
+
+        <div class="vista" data-subpanel="top_5_libros_anio" hidden>
+          <form id="filtros-top5" class="tarjeta filtros">
+            <div class="campo">
+              <label for="t5-f1">Fecha inicial F1</label>
+              <input id="t5-f1" name="f1" type="date" required value="1990-01-01">
+              <span class="campo-ayuda">Se envía en formato YYYY-MM-DD</span>
+            </div>
+            <div class="campo">
+              <label for="t5-f2">Fecha final F2</label>
+              <input id="t5-f2" name="f2" type="date" required value="2010-12-31">
+              <span class="campo-ayuda">Se envía en formato YYYY-MM-DD</span>
+            </div>
+            <div class="campo">
+              <label for="t5-orden">Orden de títulos</label>
+              <select id="t5-orden" name="orden">
+                <option value="ASC">Ascendente (A-Z)</option>
+                <option value="DESC">Descendente (Z-A)</option>
+              </select>
+            </div>
+            <div class="acciones">
+              <button class="btn" type="submit">Consultar</button>
+            </div>
+          </form>
+          <div class="tarjeta">
+            <div class="tarjeta-titulo"><h3>Frecuencia de libros por año de publicación</h3><small id="rango-libros-anio"></small></div>
+            <div class="grafico grafico-alto"><canvas id="grafico-libros-anio" role="img" aria-label="Frecuencia de libros por año"></canvas></div>
+          </div>
+          <div class="rejilla-2">
+            <div class="tarjeta">
+              <div class="tarjeta-titulo"><h3>Top 5 mejor rating por año</h3><small id="total-top5-mejores"></small></div>
+              <div id="tabla-top5-mejores"></div>
+            </div>
+            <div class="tarjeta">
+              <div class="tarjeta-titulo"><h3>Top 5 peor rating por año</h3><small id="total-top5-peores"></small></div>
+              <div id="tabla-top5-peores"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="vista" data-vista="dinamica" id="vista-dinamica" hidden></section>
+    </main>
+  </div>
+
+  <dialog id="modal-pdf" class="modal modal-pdf" aria-labelledby="modal-pdf-titulo">
+    <div class="modal-cabecera">
+      <h3 id="modal-pdf-titulo">Vista previa del reporte</h3>
+      <button class="btn btn-secundario btn-icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button>
+    </div>
+    <div class="modal-cuerpo">
+      <div id="pdf-cargando" class="cargando"><span><span class="spinner" aria-hidden="true"></span> Generando PDF...</span></div>
+      <iframe id="visor-pdf" title="Vista previa del reporte en PDF"></iframe>
+    </div>
+    <div class="modal-pie">
+      <span id="pdf-estado" class="texto-suave"></span>
+      <button id="btn-pdf-descargar" class="btn btn-secundario" type="button" disabled>Descargar</button>
+      <button id="btn-pdf-imprimir" class="btn" type="button" disabled>Imprimir</button>
+    </div>
+  </dialog>
+
+  <dialog id="modal-confirmar" class="modal modal-chico" aria-labelledby="confirmar-titulo">
+    <form method="dialog">
+      <div class="modal-cabecera">
+        <h3 id="confirmar-titulo">Confirmar</h3>
+      </div>
+      <div class="modal-cuerpo">
+        <p id="confirmar-texto"></p>
+      </div>
+      <div class="modal-pie">
+        <button class="btn btn-secundario" value="cancelar" type="submit">Cancelar</button>
+        <button id="confirmar-aceptar" class="btn" value="aceptar" type="submit">Confirmar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="notificaciones" class="notificaciones" aria-live="polite"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/charts.js"></script>
+  <script src="assets/js/reports.js"></script>
+  <script src="views/views.js"></script>
+</body>
+</html>

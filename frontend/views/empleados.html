@@ -1,0 +1,102 @@
+<div class="vista" data-recurso="empleados" data-item="empleado" data-clave="id_empleado" data-lista="empleados" data-entidad="empleado">
+  <div class="vista-encabezado">
+    <div>
+      <h2>Gestión de empleados</h2>
+      <p>Crear, editar, eliminar y listar empleados con su dependencia, cargo y afiliaciones.</p>
+    </div>
+    <button class="btn crud-nuevo" type="button">+ Nuevo empleado</button>
+  </div>
+
+  <form class="tarjeta filtros crud-filtros">
+    <div class="campo campo-ancho">
+      <label for="emp-q">Buscar</label>
+      <input id="emp-q" name="q" type="search" placeholder="Código o nombre">
+    </div>
+    <div class="campo">
+      <label for="emp-dependencia">Dependencia</label>
+      <select id="emp-dependencia" name="dependencia_id" data-catalogo="dependencias" data-id="id_dependencia"></select>
+    </div>
+    <div class="campo">
+      <label for="emp-cargo">Cargo</label>
+      <select id="emp-cargo" name="cargo_id" data-catalogo="cargos" data-id="id_cargo"></select>
+    </div>
+    <div class="campo">
+      <label for="emp-orden">Orden</label>
+      <select id="emp-orden" name="orden">
+        <option value="ASC">Nombre A-Z</option>
+        <option value="DESC">Nombre Z-A</option>
+      </select>
+    </div>
+    <div class="acciones">
+      <button class="btn" type="submit">Filtrar</button>
+      <button class="btn btn-secundario" type="reset">Limpiar</button>
+    </div>
+  </form>
+
+  <div class="tarjeta">
+    <div class="crud-tabla" data-columnas='[
+      {"clave":"id_empleado","titulo":"ID"},
+      {"clave":"codigo_personal","titulo":"Código"},
+      {"clave":"nombre_completo","titulo":"Nombre completo"},
+      {"clave":"dependencia","titulo":"Dependencia"},
+      {"clave":"cargo","titulo":"Cargo"},
+      {"clave":"fecha_ingreso","titulo":"Ingreso","tipo":"fecha"},
+      {"clave":"salario","titulo":"Salario","tipo":"moneda"}
+    ]'></div>
+    <div class="tabla-pie crud-paginacion"></div>
+  </div>
+
+  <dialog class="modal modal-mediano crud-modal" aria-labelledby="emp-modal-titulo">
+    <form novalidate>
+      <div class="modal-cabecera">
+        <h3 id="emp-modal-titulo" class="crud-modal-titulo">Empleado</h3>
+        <button class="btn btn-secundario btn-icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button>
+      </div>
+      <div class="modal-cuerpo">
+        <div class="mensaje crud-mensaje" hidden></div>
+        <div class="formulario">
+          <div class="campo">
+            <label for="f-emp-codigo">Código personal</label>
+            <input id="f-emp-codigo" name="codigo_personal" required maxlength="40" placeholder="1001">
+          </div>
+          <div class="campo">
+            <label for="f-emp-documento">Número de documento</label>
+            <input id="f-emp-documento" name="numero_documento" required maxlength="40" placeholder="DOC-1001">
+          </div>
+          <div class="campo completo">
+            <label for="f-emp-nombre">Nombre completo</label>
+            <input id="f-emp-nombre" name="nombre_completo" required maxlength="150" placeholder="empleado_01">
+          </div>
+          <div class="campo">
+            <label for="f-emp-dependencia">Dependencia</label>
+            <select id="f-emp-dependencia" name="id_dependencia" required data-tipo="entero" data-catalogo="dependencias" data-id="id_dependencia" data-texto="dependencia"></select>
+          </div>
+          <div class="campo">
+            <label for="f-emp-cargo">Cargo</label>
+            <select id="f-emp-cargo" name="id_cargo" required data-tipo="entero" data-catalogo="cargos" data-id="id_cargo" data-texto="cargo"></select>
+          </div>
+          <div class="campo">
+            <label for="f-emp-eps">EPS</label>
+            <select id="f-emp-eps" name="id_eps" data-tipo="entero" data-catalogo="eps" data-id="id_eps" data-texto="eps"></select>
+          </div>
+          <div class="campo">
+            <label for="f-emp-pension">Fondo de pensión</label>
+            <select id="f-emp-pension" name="id_fondo_pension" data-tipo="entero" data-catalogo="fondos_pension" data-id="id_fondo_pension" data-texto="fondo_pension"></select>
+          </div>
+          <div class="campo">
+            <label for="f-emp-salario">Salario</label>
+            <input id="f-emp-salario" name="salario" type="number" min="1" step="0.01" required data-tipo="decimal">
+          </div>
+          <div class="campo">
+            <label for="f-emp-ingreso">Fecha de ingreso</label>
+            <input id="f-emp-ingreso" name="fecha_ingreso" type="date" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-pie">
+        <button class="btn btn-secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="btn" type="submit" value="guardar">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+</div>

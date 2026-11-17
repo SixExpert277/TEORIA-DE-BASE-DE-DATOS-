@@ -1,0 +1,107 @@
+<div class="vista">
+  <div class="vista-encabezado">
+    <div>
+      <h2>Auditoría y trazabilidad</h2>
+      <p>Consulta de eventos registrados en la tabla auditoria y del historial de archivos cargados.</p>
+    </div>
+  </div>
+
+  <div class="pestanas" role="tablist" aria-label="Auditoría">
+    <button class="pestana activa" type="button" role="tab" aria-selected="true" data-panel-auditoria="auditoria">Registros de auditoría</button>
+    <button class="pestana" type="button" role="tab" aria-selected="false" data-panel-auditoria="archivos">Historial de archivos</button>
+  </div>
+
+  <div class="vista" data-panel-auditoria="auditoria">
+    <form id="filtros-auditoria" class="tarjeta filtros">
+      <div class="campo">
+        <label for="aud-accion">Acción</label>
+        <select id="aud-accion" name="accion">
+          <option value="">Todas</option>
+          <option value="LOGIN">LOGIN</option>
+          <option value="REGISTRO">REGISTRO</option>
+          <option value="EXPORTAR_PDF">EXPORTAR_PDF</option>
+          <option value="CARGA_ARCHIVO">CARGA_ARCHIVO</option>
+          <option value="INSERT">INSERT</option>
+          <option value="UPDATE">UPDATE</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="aud-resultado">Resultado</label>
+        <select id="aud-resultado" name="resultado">
+          <option value="">Todos</option>
+          <option value="EXITOSO">EXITOSO</option>
+          <option value="FALLIDO">FALLIDO</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="aud-tabla">Tabla afectada</label>
+        <input id="aud-tabla" name="tabla_afectada" type="search" placeholder="empleados">
+      </div>
+      <div class="campo">
+        <label for="aud-desde">Desde</label>
+        <input id="aud-desde" name="desde" type="date">
+      </div>
+      <div class="campo">
+        <label for="aud-hasta">Hasta</label>
+        <input id="aud-hasta" name="hasta" type="date">
+      </div>
+      <div class="campo">
+        <label for="aud-limite">Máximo de registros</label>
+        <select id="aud-limite" name="limite">
+          <option value="200">200</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+        </select>
+      </div>
+      <div class="acciones">
+        <button class="btn" type="submit">Consultar</button>
+        <button class="btn btn-secundario" type="reset">Limpiar</button>
+      </div>
+    </form>
+    <div class="indicadores" id="indicadores-auditoria"></div>
+    <div class="tarjeta">
+      <div class="tarjeta-titulo"><h3>Eventos registrados</h3><small>Clic en una fila para ver los datos anteriores y nuevos</small></div>
+      <div id="tabla-auditoria"></div>
+    </div>
+  </div>
+
+  <div class="vista" data-panel-auditoria="archivos" hidden>
+    <form id="filtros-archivos" class="tarjeta filtros">
+      <div class="campo">
+        <label for="arc-tipo">Tipo</label>
+        <select id="arc-tipo" name="tipo">
+          <option value="">Todos</option>
+          <option value="XLSX">XLSX</option>
+          <option value="DAT">DAT</option>
+          <option value="JSON">JSON</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="arc-estado">Estado</label>
+        <select id="arc-estado" name="estado">
+          <option value="">Todos</option>
+          <option value="COMPLETADO">COMPLETADO</option>
+          <option value="COMPLETADO_CON_ERRORES">COMPLETADO_CON_ERRORES</option>
+          <option value="FALLIDO">FALLIDO</option>
+          <option value="PROCESANDO">PROCESANDO</option>
+        </select>
+      </div>
+      <div class="acciones">
+        <button class="btn" type="submit">Consultar</button>
+      </div>
+    </form>
+    <div class="tarjeta">
+      <div class="tarjeta-titulo"><h3>Archivos cargados</h3><small>Clic en una fila para ver sus filas con error</small></div>
+      <div id="tabla-archivos"></div>
+    </div>
+  </div>
+
+  <dialog id="modal-detalle-auditoria" class="modal modal-mediano" aria-labelledby="detalle-auditoria-titulo">
+    <div class="modal-cabecera">
+      <h3 id="detalle-auditoria-titulo">Detalle</h3>
+      <button class="btn btn-secundario btn-icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button>
+    </div>
+    <div id="detalle-auditoria-cuerpo" class="modal-cuerpo"></div>
+  </dialog>
+</div>
