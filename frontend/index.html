@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="api-base" content="http://localhost:5000">
+  <title>Iniciar sesión | EntreCOL+</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <main class="pagina-login">
+    <section class="login-portada" aria-label="Presentación">
+      <div>
+        <div class="marca">
+          <div class="marca-logo" aria-hidden="true"><span>E+</span></div>
+          <div class="marca-texto">
+            <strong>EntreCOL+</strong>
+            <small>ColPlus-Solutions</small>
+          </div>
+        </div>
+        <h1>Sistema de información empresarial</h1>
+        <p>Consulta de nómina, salud y pensión, novedades y catálogo de entretenimiento con trazabilidad completa de cada operación.</p>
+        <ul>
+          <li>Reportes dinámicos con gráficos estadísticos</li>
+          <li>Vista previa e impresión de informes en PDF</li>
+          <li>Carga incremental de archivos XLSX, DAT y JSON</li>
+          <li>Auditoría de accesos y operaciones</li>
+        </ul>
+      </div>
+      <p class="login-pie">Documento de uso interno. El acceso queda registrado en la auditoría del sistema.</p>
+    </section>
+
+    <section class="login-panel">
+      <form id="form-login" class="login-tarjeta" novalidate>
+        <header>
+          <h2>Iniciar sesión</h2>
+          <p>Ingrese sus credenciales y resuelva el desafío de verificación.</p>
+        </header>
+
+        <div id="login-mensaje" class="mensaje" role="alert" hidden></div>
+
+        <div class="campo">
+          <label for="username">Usuario</label>
+          <input id="username" name="username" type="text" autocomplete="username" required maxlength="60" placeholder="usuario_01">
+        </div>
+
+        <div class="campo">
+          <label for="password">Contraseña</label>
+          <div class="captcha-fila">
+            <input id="password" name="password" type="password" autocomplete="current-password" required minlength="8">
+            <button id="btn-ver-clave" class="btn btn-secundario btn-chico" type="button" aria-pressed="false" aria-controls="password">Mostrar</button>
+          </div>
+        </div>
+
+        <div class="captcha-caja">
+          <label for="captcha-respuesta">Verificación CAPTCHA (segundo factor)</label>
+          <div class="captcha-fila">
+            <div id="captcha-imagen" class="captcha-imagen" aria-live="polite">Generando desafío...</div>
+            <button id="btn-captcha" class="btn btn-secundario btn-icono" type="button" title="Generar otro desafío" aria-label="Generar otro desafío">&#8635;</button>
+          </div>
+          <input id="captcha-respuesta" name="captcha_respuesta" type="text" required maxlength="5" minlength="5" autocomplete="off" spellcheck="false" placeholder="Escriba los 5 caracteres">
+          <span id="captcha-tiempo" class="captcha-tiempo"></span>
+        </div>
+
+        <button class="btn" type="submit">Ingresar</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>

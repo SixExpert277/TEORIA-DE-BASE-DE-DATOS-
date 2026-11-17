@@ -1,0 +1,110 @@
+<div class="vista" data-recurso="libros" data-item="libro" data-clave="id_libro" data-lista="libros" data-entidad="libro" data-paginado="servidor" data-limite="25">
+  <div class="vista-encabezado">
+    <div>
+      <h2>Gestión de libros</h2>
+      <p>Catálogo de libros con autor, editorial, idioma y rating. Búsqueda combinable por varios criterios.</p>
+    </div>
+    <button class="btn crud-nuevo" type="button">+ Nuevo libro</button>
+  </div>
+
+  <form class="tarjeta filtros crud-filtros">
+    <div class="campo campo-ancho">
+      <label for="lib-q">Título o ISBN</label>
+      <input id="lib-q" name="q" type="search" placeholder="Harry Potter">
+    </div>
+    <div class="campo">
+      <label for="lib-autor">Autor</label>
+      <input id="lib-autor" name="autor" type="search" placeholder="J.K. Rowling">
+    </div>
+    <div class="campo">
+      <label for="lib-anio">Año de publicación</label>
+      <input id="lib-anio" name="anio" type="number" min="1000" max="2100" placeholder="2004">
+    </div>
+    <div class="campo">
+      <label for="lib-rating">Rating mínimo</label>
+      <input id="lib-rating" name="rating_min" type="number" min="0" max="5" step="0.1" placeholder="4.0">
+    </div>
+    <div class="campo">
+      <label for="lib-orden">Orden</label>
+      <select id="lib-orden" name="orden">
+        <option value="ASC">Título A-Z</option>
+        <option value="DESC">Título Z-A</option>
+      </select>
+    </div>
+    <div class="acciones">
+      <button class="btn" type="submit">Buscar</button>
+      <button class="btn btn-secundario" type="reset">Limpiar</button>
+    </div>
+  </form>
+
+  <div class="tarjeta">
+    <div class="crud-tabla" data-columnas='[
+      {"clave":"id_libro","titulo":"ID"},
+      {"clave":"titulo","titulo":"Título"},
+      {"clave":"autor","titulo":"Autor"},
+      {"clave":"isbn","titulo":"ISBN"},
+      {"clave":"rating","titulo":"Rating","tipo":"rating"},
+      {"clave":"numero_paginas","titulo":"Páginas","tipo":"numero"},
+      {"clave":"anio_publicacion","titulo":"Año"}
+    ]'></div>
+    <div class="tabla-pie crud-paginacion"></div>
+  </div>
+
+  <dialog class="modal modal-mediano crud-modal" aria-labelledby="lib-modal-titulo">
+    <form novalidate>
+      <div class="modal-cabecera">
+        <h3 id="lib-modal-titulo" class="crud-modal-titulo">Libro</h3>
+        <button class="btn btn-secundario btn-icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button>
+      </div>
+      <div class="modal-cuerpo">
+        <div class="mensaje crud-mensaje" hidden></div>
+        <div class="formulario">
+          <div class="campo completo">
+            <label for="f-lib-titulo">Título</label>
+            <input id="f-lib-titulo" name="titulo" required maxlength="500">
+          </div>
+          <div class="campo">
+            <label for="f-lib-isbn">ISBN</label>
+            <input id="f-lib-isbn" name="isbn" required pattern="[0-9]{9}[0-9Xx]|[0-9]{13}" maxlength="13" placeholder="0439785960">
+          </div>
+          <div class="campo">
+            <label for="f-lib-isbn13">ISBN-13</label>
+            <input id="f-lib-isbn13" name="isbn13" pattern="[0-9]{13}" maxlength="13" placeholder="9780439785969">
+          </div>
+          <div class="campo">
+            <label for="f-lib-autor">Autor</label>
+            <input id="f-lib-autor" name="autor" required maxlength="255">
+          </div>
+          <div class="campo">
+            <label for="f-lib-editorial">Editorial</label>
+            <input id="f-lib-editorial" name="editorial" maxlength="255">
+          </div>
+          <div class="campo">
+            <label for="f-lib-idioma">Idioma</label>
+            <input id="f-lib-idioma" name="idioma" maxlength="20" placeholder="eng">
+          </div>
+          <div class="campo">
+            <label for="f-lib-paginas">Número de páginas</label>
+            <input id="f-lib-paginas" name="numero_paginas" type="number" min="1" step="1" data-tipo="entero">
+          </div>
+          <div class="campo">
+            <label for="f-lib-rating">Rating</label>
+            <input id="f-lib-rating" name="rating" type="number" min="0" max="5" step="0.01" data-tipo="decimal">
+          </div>
+          <div class="campo">
+            <label for="f-lib-resenas">Número de reseñas</label>
+            <input id="f-lib-resenas" name="numero_resenas" type="number" min="0" step="1" value="0" data-tipo="entero">
+          </div>
+          <div class="campo">
+            <label for="f-lib-fecha">Fecha de publicación</label>
+            <input id="f-lib-fecha" name="fecha_publicacion" type="date">
+          </div>
+        </div>
+      </div>
+      <div class="modal-pie">
+        <button class="btn btn-secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="btn" type="submit" value="guardar">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+</div>

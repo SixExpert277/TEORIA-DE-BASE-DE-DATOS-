@@ -1,0 +1,76 @@
+<div class="vista" data-recurso="novedades" data-item="novedad" data-clave="id_novedad" data-lista="novedades" data-entidad="novedad">
+  <div class="vista-encabezado">
+    <div>
+      <h2>Novedades manuales</h2>
+      <p>Registro y edición de incapacidades, vacaciones y demás novedades de nómina por período.</p>
+    </div>
+    <button class="btn crud-nuevo" type="button">+ Nueva novedad</button>
+  </div>
+
+  <form class="tarjeta filtros crud-filtros">
+    <div class="campo campo-ancho">
+      <label for="nov-empleado">Empleado</label>
+      <select id="nov-empleado" name="empleado_id" data-opciones-desde="empleados" data-vacio="Todos los empleados"></select>
+    </div>
+    <div class="campo">
+      <label for="nov-tipo">Tipo de novedad</label>
+      <select id="nov-tipo" name="tipo_novedad_id" data-catalogo="tipos_novedad" data-id="id_tipo_novedad"></select>
+    </div>
+    <div class="acciones">
+      <button class="btn" type="submit">Filtrar</button>
+      <button class="btn btn-secundario" type="reset">Limpiar</button>
+    </div>
+  </form>
+
+  <div class="tarjeta">
+    <div class="crud-tabla" data-columnas='[
+      {"clave":"id_novedad","titulo":"ID"},
+      {"clave":"codigo_personal","titulo":"Código"},
+      {"clave":"nombre_completo","titulo":"Empleado"},
+      {"clave":"periodo_fecha","titulo":"Período","tipo":"fecha"},
+      {"clave":"tipo_novedad","titulo":"Tipo"},
+      {"clave":"detalle","claves":["detalle","descripcion"],"titulo":"Detalle"},
+      {"clave":"dias_reportados","titulo":"Días","tipo":"numero"}
+    ]'></div>
+    <div class="tabla-pie crud-paginacion"></div>
+  </div>
+
+  <dialog class="modal modal-mediano crud-modal" aria-labelledby="nov-modal-titulo">
+    <form novalidate>
+      <div class="modal-cabecera">
+        <h3 id="nov-modal-titulo" class="crud-modal-titulo">Novedad</h3>
+        <button class="btn btn-secundario btn-icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button>
+      </div>
+      <div class="modal-cuerpo">
+        <div class="mensaje crud-mensaje" hidden></div>
+        <div class="formulario">
+          <div class="campo completo">
+            <label for="f-nov-empleado">Empleado</label>
+            <select id="f-nov-empleado" name="id_empleado" required data-tipo="entero" data-opciones-desde="empleados"></select>
+          </div>
+          <div class="campo">
+            <label for="f-nov-tipo">Tipo de novedad</label>
+            <select id="f-nov-tipo" name="id_tipo_novedad" required data-tipo="entero" data-catalogo="tipos_novedad" data-id="id_tipo_novedad" data-texto="tipo_novedad"></select>
+          </div>
+          <div class="campo">
+            <label for="f-nov-periodo">Período de nómina</label>
+            <input id="f-nov-periodo" name="periodo_fecha" type="month" required>
+            <span class="campo-ayuda">Se guarda como el primer día del mes</span>
+          </div>
+          <div class="campo">
+            <label for="f-nov-dias">Días reportados</label>
+            <input id="f-nov-dias" name="dias_reportados" type="number" min="0" max="31" step="1" value="0" data-tipo="entero">
+          </div>
+          <div class="campo completo">
+            <label for="f-nov-detalle">Detalle</label>
+            <textarea id="f-nov-detalle" name="detalle" maxlength="255" required placeholder="Incapacidad del 2022-03-01 al 2022-03-05" data-alias="descripcion"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-pie">
+        <button class="btn btn-secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="btn" type="submit" value="guardar">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+</div>

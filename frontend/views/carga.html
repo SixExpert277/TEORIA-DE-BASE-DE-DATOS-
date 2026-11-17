@@ -1,0 +1,44 @@
+<div class="vista">
+  <div class="vista-encabezado">
+    <div>
+      <h2>Carga incremental de archivos</h2>
+      <p>Suba nuevos archivos de nómina (.xlsx), películas (.dat) o libros (.json). Los registros se insertan o actualizan sin duplicados.</p>
+    </div>
+  </div>
+
+  <form id="form-carga" class="tarjeta" novalidate>
+    <div class="vista">
+      <label id="zona-archivo" class="zona-archivo" for="archivo-carga">
+        <strong>Arrastre el archivo aquí o haga clic para seleccionarlo</strong>
+        <small>Formatos permitidos: .xlsx (nómina), .dat (películas), .json (libros). Máximo 25 MB.</small>
+        <input id="archivo-carga" name="archivo" type="file" accept=".xlsx,.dat,.json" required>
+        <span id="archivo-detalle" class="texto-suave">Ningún archivo seleccionado</span>
+      </label>
+      <div id="campo-periodo" class="filtros" hidden>
+        <div class="campo">
+          <label for="periodo-carga">Período de la nómina</label>
+          <input id="periodo-carga" type="month" value="2022-03">
+          <span class="campo-ayuda">Mes al que corresponden las hojas mensuales del Excel</span>
+        </div>
+      </div>
+      <div id="carga-mensaje" class="mensaje" role="status" hidden></div>
+      <div class="filtros">
+        <div class="acciones">
+          <button class="btn" type="submit">Cargar archivo</button>
+          <button class="btn btn-secundario" type="reset">Limpiar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div id="carga-resultado" class="vista" hidden>
+    <div class="indicadores" id="carga-indicadores"></div>
+    <div class="tarjeta">
+      <div class="tarjeta-titulo">
+        <h3>Filas con error (errores_carga)</h3>
+        <small id="carga-estado"></small>
+      </div>
+      <div id="tabla-errores-carga"></div>
+    </div>
+  </div>
+</div>

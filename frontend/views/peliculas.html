@@ -1,0 +1,80 @@
+<div class="vista" data-recurso="peliculas" data-item="pelicula" data-clave="id_pelicula" data-lista="peliculas" data-entidad="película" data-paginado="servidor" data-limite="25">
+  <div class="vista-encabezado">
+    <div>
+      <h2>Gestión de películas</h2>
+      <p>Catálogo de películas con sus géneros. Búsqueda combinable por título, género y año.</p>
+    </div>
+    <button class="btn crud-nuevo" type="button">+ Nueva película</button>
+  </div>
+
+  <form class="tarjeta filtros crud-filtros">
+    <div class="campo campo-ancho">
+      <label for="pel-q">Título</label>
+      <input id="pel-q" name="q" type="search" placeholder="Toy Story">
+    </div>
+    <div class="campo">
+      <label for="pel-genero">Género</label>
+      <input id="pel-genero" name="genero" type="search" placeholder="Comedy">
+    </div>
+    <div class="campo">
+      <label for="pel-anio">Año de estreno</label>
+      <input id="pel-anio" name="anio" type="number" min="1870" max="2100" placeholder="1995">
+    </div>
+    <div class="campo">
+      <label for="pel-orden">Orden</label>
+      <select id="pel-orden" name="orden">
+        <option value="ASC">Título A-Z</option>
+        <option value="DESC">Título Z-A</option>
+      </select>
+    </div>
+    <div class="acciones">
+      <button class="btn" type="submit">Buscar</button>
+      <button class="btn btn-secundario" type="reset">Limpiar</button>
+    </div>
+  </form>
+
+  <div class="tarjeta">
+    <div class="crud-tabla" data-columnas='[
+      {"clave":"id_pelicula","titulo":"ID"},
+      {"clave":"titulo","titulo":"Título"},
+      {"clave":"fecha_estreno","titulo":"Estreno","tipo":"fecha"},
+      {"clave":"generos","titulo":"Géneros","tipo":"lista"}
+    ]'></div>
+    <div class="tabla-pie crud-paginacion"></div>
+  </div>
+
+  <dialog class="modal modal-mediano crud-modal" aria-labelledby="pel-modal-titulo">
+    <form novalidate>
+      <div class="modal-cabecera">
+        <h3 id="pel-modal-titulo" class="crud-modal-titulo">Película</h3>
+        <button class="btn btn-secundario btn-icono" type="button" data-cerrar aria-label="Cerrar">&#10005;</button>
+      </div>
+      <div class="modal-cuerpo">
+        <div class="mensaje crud-mensaje" hidden></div>
+        <div class="formulario">
+          <div class="campo">
+            <label for="f-pel-id">ID de película</label>
+            <input id="f-pel-id" name="id_pelicula" type="number" min="1" step="1" data-tipo="entero" data-solo-crear placeholder="Automático si se deja vacío">
+          </div>
+          <div class="campo">
+            <label for="f-pel-estreno">Fecha de estreno</label>
+            <input id="f-pel-estreno" name="fecha_estreno" type="date">
+          </div>
+          <div class="campo completo">
+            <label for="f-pel-titulo">Título</label>
+            <input id="f-pel-titulo" name="titulo" required maxlength="255">
+          </div>
+          <div class="campo completo">
+            <label for="f-pel-generos">Géneros</label>
+            <input id="f-pel-generos" name="generos" data-tipo="lista" placeholder="Comedy, Drama, Romance">
+            <span class="campo-ayuda">Separe los géneros con comas. Los géneros nuevos se agregan al catálogo.</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-pie">
+        <button class="btn btn-secundario" type="button" data-cerrar>Cancelar</button>
+        <button class="btn" type="submit" value="guardar">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+</div>
